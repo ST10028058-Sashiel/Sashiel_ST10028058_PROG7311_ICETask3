@@ -5,18 +5,18 @@
 }
 
 <div class="container">
-
-    <!-- 🔐 Auth Navigation -->
+@* 
+    Login logic *@
     <div class="d-flex justify-content-between mb-3 align-items-center">
         <div>
-            <a asp-controller="Library" asp-action="Index" class="btn btn-outline-primary me-2">🏠 Home</a>
-            <a asp-controller="Library" asp-action="BorrowedBooks" class="btn btn-outline-info">📄 Borrowed Books</a>
+            <a asp-controller="Library" asp-action="Index" class="btn btn-outline-primary me-2"> Home</a>
+            <a asp-controller="Library" asp-action="BorrowedBooks" class="btn btn-outline-info"> Borrowed Books</a>
         </div>
 
         <div>
             @if (userId != null)
             {
-                <span class="me-3">👋 Logged in as <strong>@userName</strong> (@userRole)</span>
+                <span class="me-3"> Logged in as <strong>@userName</strong> (@userRole)</span>
                 <a asp-controller="Login" asp-action="Logout" class="btn btn-sm btn-danger">Logout</a>
             }
             else
