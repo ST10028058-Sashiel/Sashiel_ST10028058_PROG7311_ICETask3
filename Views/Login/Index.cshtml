@@ -1,0 +1,28 @@
+﻿@model List<Sashiel_ST10028058_PROG7311_ICETask3.Models.User>
+
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h2 class="mb-3">🔐 Login</h2>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-danger">@TempData["Message"]</div>
+}
+
+<form asp-action="Login" method="post">
+    <div class="mb-3">
+        <label for="userId" class="form-label">Select a user:</label>
+        <select class="form-select" id="userId" name="userId" required>
+            <option value="">-- Choose user --</option>
+            @foreach (var user in Model)
+            {
+                <option value="@user.Id">@user.Name (@user.Role)</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-success">Login</button>
+</form>

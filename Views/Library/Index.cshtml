@@ -1,0 +1,70 @@
+﻿@model List<Sashiel_ST10028058_PROG7311_ICETask3.Models.Book>
+@{
+    ViewData["Title"] = "Library";
+    var userId = Context.Session.GetInt32("UserId");
+    var userName = Context.Session.GetString("UserName");
+    var userRole = Context.Session.GetString("UserRole");
+}
+
+<h1 class="text-primary">📚 Library Books</h1>
+
+@if (userId == null)
+{
+    <div class="alert alert-danger">
+        🚫 You must <a asp-controller="Login" asp-action="Index">log in</a> to view and borrow books.
+    </div>
+}
+else
+{
+    <p class="text-muted">👋 Welcome, <strong>@userName</strong> (@userRole)</p>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-info">@TempData["Message"]</div>
+    }
+
+    <form asp-action="Search" method="get" class="mb-3">
+        <input type="text" name="query" placeholder="Search by title or author..." class="form-control" />
+        <button type="submit" class="btn btn-sm btn-secondary mt-2">Search</button>
+    </form>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in Model)
+            {
+                <tr>
+                    <td>@book.Title</td>
+                    <td>@book.Author</td>
+                    <td>
+                        @if (book.IsAvailable)
+                        {
+                            <span class="text-success">Available</span>
+                        }
+                        else
+                        {
+                            <span class="text-danger">Borrowed</span>
+                        }
+                    </td>
+                    <td>
+                        @if (book.IsAvailable)
+                        {
+                            <a asp-action="Borrow" asp-route-id="@book.Id" class="btn btn-sm btn-primary">Borrow</a>
+                        }
+                        else
+                        {
+                            <a asp-action="Return" asp-route-id="@book.Id" class="btn btn-sm btn-warning">Return</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

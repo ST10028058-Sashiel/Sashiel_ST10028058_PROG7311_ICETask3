@@ -1,0 +1,68 @@
+﻿@model List<Sashiel_ST10028058_PROG7311_ICETask3.Models.BorrowRecord>
+@{
+    ViewData["Title"] = "Borrowed Books";
+
+    var userId = Context.Session.GetInt32("UserId");
+    var userName = Context.Session.GetString("UserName");
+    var userRole = Context.Session.GetString("UserRole");
+}
+
+@if (userId == null)
+{
+    <div class="alert alert-warning">
+        🔐 Please <a asp-controller="Login" asp-action="Index">log in</a> to view your borrowed books.
+    </div>
+}
+else
+{
+    <h2>📄 Borrowed Books</h2>
+    <p class="text-muted">👤 Logged in as <strong>@userName</strong> (@userRole)</p>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Book ID</th>
+                <th>Borrow Date</th>
+                <th>Due Date</th>
+                <th>Returned?</th>
+                <th>Return Date</th>
+                <th>Fine</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var record in Model)
+            {
+                <tr>
+                    <td>@record.UserId</td>
+                    <td>@record.BookId</td>
+                    <td>@record.BorrowDate.ToShortDateString()</td>
+                    <td>@record.DueDate.ToShortDateString()</td>
+                    <td>
+                        @if (record.IsReturned)
+                        {
+                            <span class="text-success">Yes</span>
+                        }
+                        else
+                        {
+                            <span class="text-danger">No</span>
+                        }
+                    </td>
+                    <td>@(record.ReturnDate?.ToShortDateString() ?? "-")</td>
+                    <td>
+                        @if (record.IsReturned)
+                        {
+                            <span class="text-danger">@record.FineAmount.ToString("C")</span>
+                        }
+                        else
+                        {
+                            <span>-</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <a class="btn btn-secondary" asp-action="Index">← Back to Library</a>
+}
